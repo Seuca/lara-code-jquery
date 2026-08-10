@@ -12,5 +12,3 @@ Route::get('/', function () {
 Route::resource('categorias', CategoriaController::class)->except('show');
 Route::resource('productos', ProductoController::class)->except('show');
 Route::resource('clientes', ClienteController::class)->except('show');
-
-require __DIR__.'/auth.php';

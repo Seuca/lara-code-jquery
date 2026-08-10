@@ -6,9 +6,19 @@ use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('dashboard');
-})->name('dashboard');
+    return auth()->check()
+        ? redirect()->route('dashboard')
+        : redirect()->route('login');
+});
 
-Route::resource('categorias', CategoriaController::class)->except('show');
-Route::resource('productos', ProductoController::class)->except('show');
-Route::resource('clientes', ClienteController::class)->except('show');
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::resource('categorias', CategoriaController::class)->except('show');
+    Route::resource('productos', ProductoController::class)->except('show');
+    Route::resource('clientes', ClienteController::class)->except('show');
+});
+
+require __DIR__.'/auth.php';
